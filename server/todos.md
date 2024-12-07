@@ -1,8 +1,8 @@
 ## now
-- Controlls needs to be thinked
+- Controls needs to be thinked
 
 ## Mid-term things
-- How do I manage controlls? And other signals from the user?
+- How do I manage controls? And other signals from the user?
 - Extend and abstract messaging
   - I must have more than one type of messages
   - Didn't websockets have it's own way of doing it?

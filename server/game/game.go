@@ -6,9 +6,11 @@ import (
 	"time"
 )
 
+type GameMap map[string]GameObject
+
 type GameRoom struct {
-	GameMap  map[string]GameObject
-	Sync *[]chan bool
+	GameMap GameMap
+	Sync    *[]chan bool
 }
 
 func (GameRoom *GameRoom) Start() {
@@ -25,7 +27,7 @@ func (GameRoom *GameRoom) Start() {
 			// a list of channels to sync the gameloop with
 			// listeners like session.PlayerHandler()
 			for _, c := range *GameRoom.Sync {
-				c<-true
+				c <- true
 			}
 		}
 	}()

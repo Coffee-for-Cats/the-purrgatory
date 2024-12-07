@@ -15,13 +15,30 @@ type vector struct {
 }
 
 type Player struct {
-	Name string
+	Name     string
+	Controls PlayerControls
 	vector
 }
 
+type PlayerControls struct {
+	ArrowUp    bool
+	ArrowDown  bool
+	ArrowLeft  bool
+	ArrowRight bool
+}
+
 func (p *Player) step(g *GameRoom) {
-	p.X++
-	// fmt.Println("Player x: ", p.X)
+	// yay =)
+	switch {
+	case p.Controls.ArrowDown:
+		p.Y--
+	case p.Controls.ArrowUp:
+		p.Y++
+	case p.Controls.ArrowRight:
+		p.X++
+	case p.Controls.ArrowLeft:
+		p.X--
+	}
 }
 
 type Enemy struct {
