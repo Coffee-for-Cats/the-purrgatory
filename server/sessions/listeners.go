@@ -17,7 +17,15 @@ func PlayerHandler(session Session) {
 func ControlsUpdater(session Session) {
 	player := session.GameRoom.GameMap[session.PlayerId].(*game.Player)
 	for {
-		session.Connection.ReadJSON(&player.Controls)
+		swap := game.PlayerControls{}
+		err := session.Connection.ReadJSON(&swap)
+		if err != nil {
+			// removes the player
+			delete(session.GameRoom.GameMap, session.PlayerId)
+			// closes the connection and breaks the for loop
+			return
+		}
+		player.UpdateControls(swap)
 	}
 }
 

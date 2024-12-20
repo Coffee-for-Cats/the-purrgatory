@@ -8,15 +8,15 @@ type GameObject interface {
 }
 
 type vector struct {
-	X    int `json:"x"`
-	Y    int `json:"y"`
-	VelX int `json:"vel_x"`
-	VelY int `json:"vel_y"`
+	X    int     `json:"x"`
+	Y    int     `json:"y"`
+	VelX float32 `json:"vel_x"`
+	VelY float32 `json:"vel_y"`
 }
 
 type Player struct {
 	Name     string
-	Controls PlayerControls
+	controls PlayerControls
 	vector
 }
 
@@ -27,17 +27,32 @@ type PlayerControls struct {
 	ArrowRight bool
 }
 
+func (p *Player) UpdateControls(newControls PlayerControls) {
+	p.controls = newControls
+}
+
+var playerAcc float32 = 25.0
+var airRes float32 = 0.8
+
 func (p *Player) step(g *GameRoom) {
-	// yay =)
-	switch {
-	case p.Controls.ArrowDown:
-		p.Y--
-	case p.Controls.ArrowUp:
-		p.Y++
-	case p.Controls.ArrowRight:
-		p.X++
-	case p.Controls.ArrowLeft:
-		p.X--
+
+	p.X += int(p.VelX)
+	p.Y += int(p.VelY)
+
+	p.VelX *= 1 - airRes
+	p.VelY *= 1 - airRes
+
+	if p.controls.ArrowRight {
+		p.VelX += playerAcc
+	}
+	if p.controls.ArrowLeft {
+		p.VelX -= playerAcc
+	}
+	if p.controls.ArrowUp {
+		p.VelY += playerAcc
+	}
+	if p.controls.ArrowDown {
+		p.VelY -= playerAcc
 	}
 }
 
