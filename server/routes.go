@@ -32,22 +32,22 @@ func CreateGame(w http.ResponseWriter, req *http.Request) {
 	randomRoomId := base64.URLEncoding.EncodeToString(randBytes)
 
 	// no idea why this can't be inline
-	
+
 	// creates a game room
-	channel := make([]chan bool, 0) 
+	channel := make([]chan bool, 0)
 	room := game.GameRoom{
-		GameMap:  make(map[string]game.GameObject),
-		Sync: &channel,
+		GameMap: make(map[string]game.GameObject),
+		Sync:    &channel,
 	}
 	// and saves it
 	RunningGames[randomRoomId] = room
 
 	room.Start()
 	fmt.Println("Started room " + randomRoomId)
-	
+
 	// TODO: replace this line:
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	fmt.Fprintf(w, randomRoomId)
+	fmt.Fprintf(w, "%s", randomRoomId)
 }
 
 func connectPlayer(gameId string, w http.ResponseWriter, req *http.Request) {
@@ -58,30 +58,23 @@ func connectPlayer(gameId string, w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// finally connects
 	conn, err := upgrader.Upgrade(w, req, nil)
 	if err != nil {
 		panic(err)
 	}
 
 	// adds the player to the game
-	id := room.Append(&game.Player{
-		Name: "Alex",
-	})
+	player := game.Player{}
+	player.Data.Name = "Arthur"
 
-	// creates a channel, saves on the GameMap, and passes a 
+	id := room.Append(&player)
+
+	// creates a channel, saves on the GameMap, and passes a
 	// reference to Session in question.
-	syncChan := make(chan bool)
-	*room.Sync = append(*room.Sync, syncChan)
 
-	session := sessions.Session{
-		Connection: conn,
-		GameRoom: &room,
-		PlayerId: id,
-		SyncChan: &syncChan,
-	}
+	newSession := sessions.Connect(conn, &room, id)
 
 	// set up a listener for the new player
 	// updates him sometimes and recieves control updates too
-	go sessions.PlayerHandler(session)
+	go sessions.PlayerHandler(newSession)
 }

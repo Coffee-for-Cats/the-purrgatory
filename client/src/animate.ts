@@ -11,7 +11,6 @@ blueMage.src = './sprites/bluemage.png'
 
 window.requestAnimationFrame(Step)
 export function Step(timestamp: number) {
-  FramesBeforeUpdate++
   // paint everything here =)
   ctx.clearRect(0, 0, GameCanvas.width, GameCanvas.height)
   for (const obj of Object.values(GameMap)) {
@@ -24,10 +23,4 @@ export function Step(timestamp: number) {
   }
 
   requestAnimationFrame(Step)
-}
-
-export let FramesBeforeUpdate = 0
-export function ResetAnimationFrame() {
-  console.log('Frames before sync: ', FramesBeforeUpdate)
-  FramesBeforeUpdate = 0
 }

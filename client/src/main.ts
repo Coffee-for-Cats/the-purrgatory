@@ -17,7 +17,7 @@ if (!roomId) {
   // TODO: make a redirect in the hosting to redirect any link to this page
 }
 
-alert(`Logged into session ${roomId}`)
+console.log(`Logged into session ${roomId}`)
 
 export const Socket = new WebSocket(`http://localhost:8080/${roomId}`)
 Socket.onerror = (e) => console.error(e)

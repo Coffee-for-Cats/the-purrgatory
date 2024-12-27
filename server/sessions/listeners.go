@@ -4,35 +4,39 @@ import (
 	"purrgatory/game"
 )
 
-func PlayerHandler(session Session) {
-	// listens conn.ReadMessage, and parses into s
-	// controls must be acessed from outside, pretty tricky
-
-	// maybe a channel based would be fancier
-	go ControlsUpdater(session)
-	PlayerUpdater(session)
+// encapsulates player communication logic using session.
+func PlayerHandler(session session) {
+	go controlsUpdater(session)
+	playerUpdater(session)
 }
 
-// blocking, should be called with the go keyword
-func ControlsUpdater(session Session) {
+// blocking op
+func controlsUpdater(session session) {
 	player := session.GameRoom.GameMap[session.PlayerId].(*game.Player)
+
 	for {
 		swap := game.PlayerControls{}
 		err := session.Connection.ReadJSON(&swap)
+
+		// player disconnected
 		if err != nil {
-			// removes the player
-			delete(session.GameRoom.GameMap, session.PlayerId)
-			// closes the connection and breaks the for loop
+			session.Disconnect()
 			return
 		}
 		player.UpdateControls(swap)
 	}
 }
 
-// blocking, should be called with the go keyword
-func PlayerUpdater(session Session) {
+// blocking op
+func playerUpdater(session session) {
 	for {
 		<-*session.SyncChan
-		session.Connection.WriteJSON((session.GameRoom.GameMap))
+		err := session.Connection.WriteJSON(session.GameRoom.GameMap)
+
+		// player disconnected
+		if err != nil {
+			session.Disconnect()
+			return
+		}
 	}
 }

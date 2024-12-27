@@ -6,13 +6,6 @@ import (
 	"time"
 )
 
-type GameMap map[string]GameObject
-
-type GameRoom struct {
-	GameMap GameMap
-	Sync    *[]chan bool
-}
-
 func (GameRoom *GameRoom) Start() {
 	gameLoop := time.NewTicker(100 * time.Millisecond)
 
@@ -24,8 +17,6 @@ func (GameRoom *GameRoom) Start() {
 				object.step(GameRoom)
 			}
 
-			// a list of channels to sync the gameloop with
-			// listeners like session.PlayerHandler()
 			for _, c := range *GameRoom.Sync {
 				c <- true
 			}
