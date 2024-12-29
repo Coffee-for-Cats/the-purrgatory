@@ -30,7 +30,6 @@ Update(Socket)
 export function Step(timestamp: number) {
   ClearCanvas()
   for (const obj of Object.values(GameMap)) {
-    console.log(obj)
     Paint(obj as GameObject)
   }
   requestAnimationFrame(Step)
