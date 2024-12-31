@@ -1,8 +1,8 @@
 import { FRAMES_PER_TICK } from './configs'
 import type { GameObject } from './main'
 
-type Map = { [index: string]: GameObject }
-export let GameMap: Map = {}
+type GameMap = Map<string, GameObject>
+export const GameMap: GameMap = new Map()
 
 let socketRef: WebSocket | null = null
 export function Listen(Socket: WebSocket) {
@@ -11,7 +11,7 @@ export function Listen(Socket: WebSocket) {
 }
 
 function defaultMapUpdater(ev: MessageEvent) {
-  const newState = JSON.parse(ev.data) as Map
+  const newState = JSON.parse(ev.data) as GameMap
 
   // creates the object if it doesn't exist
   for (const key of Object.keys(newState)) {
@@ -42,6 +42,10 @@ addEventListener('visibilitychange', () => {
 // lasts 1 tick, updates the screen instantly and resets to the normal execution
 function fasterMapUpdater(ev: MessageEvent) {
   if (!socketRef) return
-  GameMap = JSON.parse(ev.data) as Map
+  const newState = JSON.parse(ev.data) as GameMap
+  // not directly assinging to keep GameMap as a ES6 Map instead of Object.
+  for (const key of Object.keys(newState)) {
+    GameMap[key] = newState[key]
+  }
   socketRef.onmessage = defaultMapUpdater
 }
