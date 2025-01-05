@@ -27,8 +27,11 @@ function defaultMapUpdater(ev: MessageEvent) {
       // difference between "should" position and "is" position
       const dif_x = newState[key].x - GameMap[key].x
       const dif_y = newState[key].y - GameMap[key].y
-      GameMap[key].vel_x = newState[key].vel_x + dif_x / FRAMES_PER_TICK
-      GameMap[key].vel_y = newState[key].vel_y + dif_y / FRAMES_PER_TICK
+      // no need for "/ FRAMES_PER_TICK" because the position is already updated
+      // considering the frames.
+      GameMap[key].vel_x = newState[key].vel_x + dif_x
+      GameMap[key].vel_y = newState[key].vel_y + dif_y
+      console.log(GameMap[key].vel_x)
     }
   }
 }

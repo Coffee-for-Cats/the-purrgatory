@@ -7,7 +7,7 @@ import (
 )
 
 func (GameRoom *GameRoom) Start() {
-	gameLoop := time.NewTicker(100 * time.Millisecond)
+	gameLoop := time.NewTicker(200 * time.Millisecond)
 
 	// start game loop
 	go func() {
