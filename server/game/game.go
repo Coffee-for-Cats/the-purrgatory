@@ -7,7 +7,8 @@ import (
 )
 
 func (GameRoom *GameRoom) Start() {
-	gameLoop := time.NewTicker(200 * time.Millisecond)
+	// 10 TPS
+	gameLoop := time.NewTicker(100 * time.Millisecond)
 
 	// start game loop
 	go func() {
@@ -25,6 +26,8 @@ func (GameRoom *GameRoom) Start() {
 }
 
 func (GameRoom *GameRoom) Append(object GameObject) (id string) {
+	object.typeSet() // just to have a reference to the object type
+
 	// generates a random id
 	randBytes := make([]byte, 8)
 	rand.Read(randBytes)

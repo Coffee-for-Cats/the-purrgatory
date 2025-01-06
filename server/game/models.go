@@ -15,7 +15,7 @@ type GameObject interface {
 
 type Generic[T any] struct {
 	Data     T
-	TypeName string
+	TypeName string  `json:"type"`
 	X        int     `json:"x"`
 	Y        int     `json:"y"`
 	VelX     float32 `json:"vel_x"`

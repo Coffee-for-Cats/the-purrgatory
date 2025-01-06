@@ -1,6 +1,15 @@
-import { ClearCanvas, Paint } from './animations'
-import { Update } from './controlls'
-import { GameMap, Listen } from './map'
+import { Update } from './logic/controlls'
+import { GameMap, Listen } from './logic/map'
+import { Models } from './models/models'
+import { ClearCanvas } from './painting/animations'
+
+export type GameObject = {
+  x: number
+  y: number
+  vel_x: number
+  vel_y: number
+  type: string
+}
 
 let roomId = prompt('RoomId: ')
 if (!roomId) {
@@ -17,8 +26,6 @@ if (!roomId) {
   // TODO: make a redirect in the hosting to redirect any link to this page
 }
 
-console.log(`Logged into session ${roomId}`)
-
 export const Socket = new WebSocket(`http://localhost:8080/${roomId}`)
 Socket.onerror = (e) => console.error(e)
 
@@ -27,19 +34,14 @@ Listen(Socket)
 // updates the server on key press
 Update(Socket)
 
-export function Step(timestamp: number) {
+window.requestAnimationFrame(Step)
+function Step(timestamp: number) {
   ClearCanvas()
-  for (const obj of Object.values(GameMap)) {
-    Paint(obj as GameObject)
+  for (const key in GameMap) {
+    const obj = GameMap[key]
+    const typeFunc = Models[obj.type]
+    if (!typeFunc) throw new Error(`Unkown type returned: ${obj.typeName}`)
+    Models[obj.type](obj)
   }
   requestAnimationFrame(Step)
-}
-window.requestAnimationFrame(Step)
-
-export interface GameObject {
-  x: number
-  y: number
-  vel_x: number
-  vel_y: number
-  type: string
 }
