@@ -1,7 +1,4 @@
-import { FRAMES_PER_TICK } from '../configs'
-import { GameMap } from '../logic/map'
 import type { GameObject } from '../main'
-import { Models } from '../models/models'
 
 const GameCanvas = document.getElementById('game-canvas') as HTMLCanvasElement
 GameCanvas.width = GameCanvas.clientWidth
@@ -18,6 +15,7 @@ export function PaintObject(obj: GameObject, src: HTMLImageElement) {
   ctx.drawImage(src, obj.x, -obj.y, 64, 64)
 }
 
+// gets the filename and returns an image with the src set to /sprites/<name>.png
 export function Source(url: string) {
   const img = document.createElement('img')
   img.src = `./sprites/${url}.png`

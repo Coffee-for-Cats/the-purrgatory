@@ -1,8 +1,9 @@
 {
   "name": "client",
   "version": "1.0.0",
-  "main": "_scripts.js",
+  "main": "./src/main.ts",
   "scripts": {
+    "dev": "npx vite",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -11,5 +12,9 @@
   "description": "",
   "dependencies": {
     "@biomejs/biome": "^1.9.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
   }
 }
