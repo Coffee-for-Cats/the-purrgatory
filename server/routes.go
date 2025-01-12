@@ -42,7 +42,8 @@ func CreateGame(w http.ResponseWriter, req *http.Request) {
 	// and saves it
 	RunningGames[randomRoomId] = room
 
-	room.Start()
+	// I just wasted 50 minutes because of this "go"
+	go room.Start()
 	fmt.Println("Started room " + randomRoomId)
 
 	// TODO: replace this line:

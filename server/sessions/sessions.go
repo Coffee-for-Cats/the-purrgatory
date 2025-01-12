@@ -1,6 +1,7 @@
 package sessions
 
 import (
+	"fmt"
 	"purrgatory/game"
 
 	"github.com/gorilla/websocket"
@@ -43,4 +44,6 @@ func (session session) Disconnect() {
 	}
 	sync[index] = sync[len(sync)-1]
 	*session.GameRoom.Sync = sync[:len(sync)-1]
+
+	fmt.Println("Player disconected")
 }

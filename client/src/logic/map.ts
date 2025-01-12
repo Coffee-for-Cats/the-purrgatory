@@ -1,4 +1,4 @@
-import type { GameObject } from '../main'
+import type { GameObject } from '../models/models'
 
 export type GameMapType = Map<string, GameObject>
 export const GameMap: GameMapType = new Map()

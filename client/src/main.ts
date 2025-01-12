@@ -3,14 +3,6 @@ import { GameMap, Listen } from './logic/map'
 import { Models } from './models/models'
 import { ClearCanvas } from './painting/animations'
 
-export type GameObject = {
-  x: number
-  y: number
-  vel_x: number
-  vel_y: number
-  type: string
-}
-
 let roomId = prompt('RoomId: ')
 if (!roomId) {
   try {

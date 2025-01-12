@@ -3,4 +3,5 @@
 *.png
 *.jpg
 *out*
+*.zip
 */.vscode

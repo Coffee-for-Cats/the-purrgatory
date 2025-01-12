@@ -12,7 +12,10 @@ func PlayerHandler(session session) {
 
 // blocking op
 func controlsUpdater(session session) {
-	player := session.GameRoom.GameMap[session.PlayerId].(*game.Player)
+	player, ok := session.GameRoom.GameMap[session.PlayerId].(*game.Player)
+	if !ok {
+		session.Disconnect()
+	}
 
 	for {
 		swap := game.PlayerControls{}
