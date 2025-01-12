@@ -38,7 +38,7 @@ func (session session) Disconnect() {
 		}
 	}
 	sync := *session.GameRoom.Sync
-	if index < 0 || index > len(sync) {
+	if index < 0 || index >= len(sync) {
 		panic("Session disconnection gone wrong!")
 	}
 	sync[index] = sync[len(sync)-1]
