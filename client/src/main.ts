@@ -33,7 +33,7 @@ function Step(timestamp: number) {
     const obj = GameMap[key]
     const typeFunc = Models[obj.type]
     if (!typeFunc) throw new Error(`Unkown type returned: ${obj.typeName}`)
-    Models[obj.type](obj)
+    typeFunc(obj)
   }
   requestAnimationFrame(Step)
 }
