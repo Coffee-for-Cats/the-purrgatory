@@ -7,13 +7,19 @@ type PlayerControls struct {
 	ArrowRight bool
 }
 
-type Player Generic[struct {
-	Name     string
+type Player struct {
+	Entity
+	PhysicalObj
 	controls PlayerControls
-}]
+}
+
+// type Player Generic[struct {
+// 	Name     string
+// 	controls PlayerControls
+// }]
 
 func (p *Player) UpdateControls(newControls PlayerControls) {
-	p.Data.controls = newControls
+	p.controls = newControls
 }
 
 var playerAcc float32 = 25.0
@@ -27,16 +33,16 @@ func (p *Player) step(g *GameRoom) {
 	p.VelX *= 1 - airRes
 	p.VelY *= 1 - airRes
 
-	if p.Data.controls.ArrowRight {
+	if p.controls.ArrowRight {
 		p.VelX += playerAcc
 	}
-	if p.Data.controls.ArrowLeft {
+	if p.controls.ArrowLeft {
 		p.VelX -= playerAcc
 	}
-	if p.Data.controls.ArrowUp {
+	if p.controls.ArrowUp {
 		p.VelY += playerAcc
 	}
-	if p.Data.controls.ArrowDown {
+	if p.controls.ArrowDown {
 		p.VelY -= playerAcc
 	}
 }

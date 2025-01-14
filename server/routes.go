@@ -66,7 +66,6 @@ func connectPlayer(gameId string, w http.ResponseWriter, req *http.Request) {
 
 	// adds the player to the game
 	player := game.Player{}
-	player.Data.Name = "Arthur"
 
 	id := room.Append(&player)
 

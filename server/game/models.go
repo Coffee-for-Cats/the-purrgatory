@@ -13,11 +13,13 @@ type GameObject interface {
 	typeSet()
 }
 
-type Generic[T any] struct {
-	Data     T
-	TypeName string  `json:"type"`
-	X        int     `json:"x"`
-	Y        int     `json:"y"`
-	VelX     float32 `json:"vel_x"`
-	VelY     float32 `json:"vel_y"`
+type Entity struct {
+	TypeName string `json:"type"`
+}
+
+type PhysicalObj struct {
+	X    int     `json:"x"`
+	Y    int     `json:"y"`
+	VelX float32 `json:"vel_x"`
+	VelY float32 `json:"vel_y"`
 }
