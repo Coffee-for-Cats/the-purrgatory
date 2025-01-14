@@ -2,6 +2,6 @@
 *-lock.json
 *.png
 *.jpg
-*out*
+*/out
 *.zip
 */.vscode
