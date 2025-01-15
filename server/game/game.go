@@ -7,39 +7,42 @@ import (
 	"time"
 )
 
+// called in a new thread
 func (GameRoom *GameRoom) Start() {
 	// 10 TPS
 	gameLoop := time.NewTicker(100 * time.Millisecond)
 	ticksBeforeClose := 5
 
 	// start game loop
-	func() {
-		for range gameLoop.C {
-			// do the entire game logic =)
-			for _, object := range GameRoom.GameMap {
-				object.step(GameRoom)
-			}
-			// breaks if nothing is listening to the server tick
-			if len(*GameRoom.Sync) == 0 {
-				ticksBeforeClose--
-				if ticksBeforeClose < 0 {
-					gameLoop.Stop()
-					return
-				}
-			}
-			fmt.Println("Tick")
+	for range gameLoop.C {
+		// do the entire game logic =)
+		for _, object := range GameRoom.GameMap {
+			object.step(GameRoom)
+		}
 
-			// sends a signal for everything "listening", just for syncronization
-			for _, c := range *GameRoom.Sync {
-				c <- true
+		// sends a signal for everything "listening", just for syncronization
+		for _, c := range *GameRoom.Sync {
+			c <- true
+		}
+
+		// closes after 5 ticks with no listeners
+		if len(*GameRoom.Sync) == 0 {
+			ticksBeforeClose--
+			if ticksBeforeClose < 0 {
+				gameLoop.Stop()
+				break
 			}
 		}
-	}()
+	}
 	fmt.Println("A session was closed")
 }
 
 func (GameRoom *GameRoom) Append(object GameObject) (id string) {
-	object.typeSet() // just to have a reference to the object type
+	object.setup()
+
+	if object.about().Type == "" {
+		panic("You missed to set the Type field for an object added into the map.")
+	}
 
 	// generates a random id
 	randBytes := make([]byte, 8)

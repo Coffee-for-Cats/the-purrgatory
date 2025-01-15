@@ -8,15 +8,9 @@ type PlayerControls struct {
 }
 
 type Player struct {
-	Entity
-	PhysicalObj
+	Physical
 	controls PlayerControls
 }
-
-// type Player Generic[struct {
-// 	Name     string
-// 	controls PlayerControls
-// }]
 
 func (p *Player) UpdateControls(newControls PlayerControls) {
 	p.controls = newControls
@@ -26,7 +20,6 @@ var playerAcc float32 = 25.0
 var airRes float32 = 0.8
 
 func (p *Player) step(g *GameRoom) {
-
 	p.X += int(p.VelX)
 	p.Y += int(p.VelY)
 
@@ -47,6 +40,9 @@ func (p *Player) step(g *GameRoom) {
 	}
 }
 
-func (p *Player) typeSet() {
-	p.TypeName = "player"
+func (p *Player) setup() {
+	p.Solid = true
+	p.Type = "player"
+	p.X = 20
+	p.Y = -30
 }
