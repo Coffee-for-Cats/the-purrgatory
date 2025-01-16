@@ -1,5 +1,7 @@
 package game
 
+import "purrgatory/config"
+
 type PlayerControls struct {
 	ArrowUp    bool
 	ArrowDown  bool
@@ -20,6 +22,8 @@ var playerAcc float32 = 12.0
 var airRes float32 = 0.8
 
 func (p *Player) step(g *GameRoom) {
+	p.Y += int(p.VelY)
+	p.X += int(p.VelX)
 
 	p.VelX *= 1 - airRes
 	p.VelY *= 1 - airRes
@@ -37,9 +41,7 @@ func (p *Player) step(g *GameRoom) {
 		p.VelY -= playerAcc
 	}
 
-	new_pos := occupySpace(p, g)
-	p.X = *new_pos.X
-	p.Y = *new_pos.Y
+	occupySpace(p, g)
 }
 
 func (p *Player) setup() {
@@ -47,6 +49,6 @@ func (p *Player) setup() {
 	p.Solid = true
 	p.X = 20
 	p.Y = -30
-	p.Width = 64
-	p.Height = 64
+	p.Width = 16 * config.ZOOM_FACTOR
+	p.Height = 16 * config.ZOOM_FACTOR
 }

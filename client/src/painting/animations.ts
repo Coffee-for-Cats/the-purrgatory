@@ -1,3 +1,4 @@
+import { ZOOM_FACTOR } from '../configs'
 import type { GameObject } from '../models/models'
 
 const GameCanvas = document.getElementById('game-canvas') as HTMLCanvasElement
@@ -20,7 +21,13 @@ export function ClearCanvas() {
 }
 
 export function PaintObject(obj: Movable, src: HTMLImageElement) {
-  ctx.drawImage(src, obj.x, -obj.y, 64, 64)
+  const width = src.width * ZOOM_FACTOR
+  const height = src.height * ZOOM_FACTOR
+
+  const x = obj.x - width / 2
+  const y = -obj.y - height / 2
+
+  ctx.drawImage(src, x, y, width, height)
 }
 
 // gets the filename and returns an image with the src set to /sprites/<name>.png

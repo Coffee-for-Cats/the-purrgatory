@@ -32,8 +32,6 @@ func occupySpace(primary GameObject, g *GameRoom) (modified About) {
 		}
 	}
 
-	*p.Y += int(*p.VelY)
-
 	// for X-axis movement limitation
 	for _, object := range g.GameMap {
 		obj := object.about()
@@ -53,8 +51,6 @@ func occupySpace(primary GameObject, g *GameRoom) (modified About) {
 			*p.VelX += float32(distX * sign)
 		}
 	}
-
-	*p.X += int(*p.VelX)
 
 	return p
 }
