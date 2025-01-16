@@ -15,12 +15,8 @@ type GameObject interface {
 	about() About
 }
 
-type Entity struct {
-	Type string `json:"type"`
-}
-
 type Physical struct {
-	Entity
+	Type   string `json:"type"`
 	Solid  bool
 	X      int `json:"x"`
 	Y      int `json:"y"`
@@ -32,20 +28,24 @@ type Physical struct {
 
 func (p *Physical) about() About {
 	return About{
-		Type:   p.Type,
-		Solid:  p.Solid,
-		X:      p.X,
-		Y:      p.Y,
-		Width:  p.Width,
-		Height: p.Height,
+		Type:   &p.Type,
+		Solid:  &p.Solid,
+		X:      &p.X,
+		Y:      &p.Y,
+		VelX:   &p.VelX,
+		VelY:   &p.VelY,
+		Width:  &p.Width,
+		Height: &p.Height,
 	}
 }
 
 type About struct {
-	Type   string
-	Solid  bool
-	X      int
-	Y      int
-	Width  int
-	Height int
+	Type   *string
+	Solid  *bool
+	X      *int
+	Y      *int
+	VelX   *float32
+	VelY   *float32
+	Width  *int
+	Height *int
 }

@@ -10,8 +10,16 @@ import (
 // called in a new thread
 func (GameRoom *GameRoom) Start() {
 	// 10 TPS
-	gameLoop := time.NewTicker(100 * time.Millisecond)
+	gameLoop := time.NewTicker(50 * time.Millisecond)
 	ticksBeforeClose := 5
+
+	// just for testing. TODO: remove this
+	GameRoom.Append(&Tree{
+		Physical: Physical{
+			X: 200,
+			Y: -300,
+		},
+	})
 
 	// start game loop
 	for range gameLoop.C {
@@ -40,7 +48,7 @@ func (GameRoom *GameRoom) Start() {
 func (GameRoom *GameRoom) Append(object GameObject) (id string) {
 	object.setup()
 
-	if object.about().Type == "" {
+	if *object.about().Type == "" {
 		panic("You missed to set the Type field for an object added into the map.")
 	}
 

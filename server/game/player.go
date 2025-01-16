@@ -16,12 +16,10 @@ func (p *Player) UpdateControls(newControls PlayerControls) {
 	p.controls = newControls
 }
 
-var playerAcc float32 = 25.0
+var playerAcc float32 = 12.0
 var airRes float32 = 0.8
 
 func (p *Player) step(g *GameRoom) {
-	p.X += int(p.VelX)
-	p.Y += int(p.VelY)
 
 	p.VelX *= 1 - airRes
 	p.VelY *= 1 - airRes
@@ -38,11 +36,17 @@ func (p *Player) step(g *GameRoom) {
 	if p.controls.ArrowDown {
 		p.VelY -= playerAcc
 	}
+
+	new_pos := occupySpace(p, g)
+	p.X = *new_pos.X
+	p.Y = *new_pos.Y
 }
 
 func (p *Player) setup() {
-	p.Solid = true
 	p.Type = "player"
+	p.Solid = true
 	p.X = 20
 	p.Y = -30
+	p.Width = 64
+	p.Height = 64
 }
