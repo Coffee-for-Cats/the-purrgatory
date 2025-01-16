@@ -10,7 +10,7 @@ import (
 // called in a new thread
 func (GameRoom *GameRoom) Start() {
 	// 10 TPS
-	gameLoop := time.NewTicker(50 * time.Millisecond)
+	gameLoop := time.NewTicker(100 * time.Millisecond)
 	ticksBeforeClose := 5
 
 	// just for testing. TODO: remove this

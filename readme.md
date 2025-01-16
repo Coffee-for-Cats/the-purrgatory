@@ -17,3 +17,5 @@ This ensures smooth position updating and is lightweight.
 ### how to run
 `bash dev.sh` or 
 `go run .` in the /server and `npm run dev` in the /client
+
+You will need to put assets in /client/sprites

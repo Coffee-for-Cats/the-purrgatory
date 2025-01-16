@@ -19,7 +19,6 @@ func occupySpace(primary GameObject, g *GameRoom) (modified About) {
 			continue
 		}
 
-		// this bad as shit
 		distX := math.Abs(float64(*p.X-*obj.X)) - (float64(*p.Width)/2 + float64(*obj.Width)/2)
 		distY := math.Abs(float64(*p.Y-*obj.Y)+float64(*p.VelY)) - (float64(*p.Height)/2 + float64(*obj.Height)/2)
 
@@ -39,7 +38,6 @@ func occupySpace(primary GameObject, g *GameRoom) (modified About) {
 			continue
 		}
 
-		// this bad as shit
 		distX := math.Abs(float64(*p.X-*obj.X)+float64(*p.VelX)) - (float64(*p.Width)/2 + float64(*obj.Width)/2)
 		distY := math.Abs(float64(*p.Y-*obj.Y)) - (float64(*p.Height)/2 + float64(*obj.Height)/2)
 

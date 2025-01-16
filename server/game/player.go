@@ -18,7 +18,7 @@ func (p *Player) UpdateControls(newControls PlayerControls) {
 	p.controls = newControls
 }
 
-var playerAcc float32 = 12.0
+var playerAcc float32 = 24.0
 var airRes float32 = 0.8
 
 func (p *Player) step(g *GameRoom) {

@@ -1,5 +1,4 @@
 import { ZOOM_FACTOR } from '../configs'
-import type { GameObject } from '../models/models'
 
 const GameCanvas = document.getElementById('game-canvas') as HTMLCanvasElement
 GameCanvas.width = GameCanvas.clientWidth
