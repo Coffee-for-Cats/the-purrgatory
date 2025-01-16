@@ -1,18 +1,19 @@
 # PurrGatory
-A web-based, vampire-survivors-like multiplayer game.
+  A web-based, vampire-survivors-like multiplayer game.
+  It's low on production dependencies: Golang & Typescript + BiomeJS
 
-## Sever
-The server is written in golang, you probably don't need anything other than go in your machine to run.
-The server has 2 routes, one for creating and other for connecting to a room.
-A Room doesn't contain players, it is a separate goroutine for isolation and performance.
-The room contains a map, each gameObject must have a "type" json property setted by setType, and must implement a step() function.
-This part of the backend is to ensure your types are correct and are parsed to the frontend.
+## server
+  The server has 2 routes, one for creating and other for connecting to a room.
+  A Room doesn't contain connections, it is a separate goroutine for isolation and performance; the player object is a struct and it's refence is saved in said goroutine.
+The room contains a GameMap which is a hashmap of GameObject interfaces. You can make your gameobject structs embeeding "Physical". The type is a necessary field to be defined at setup.
+  setup() is like a constructor function, and it is useful to share behavior.
+  obj.about() return the Physical's fields as references if you need to modify objects generically.
 
 ## client
-The client recieves the positions of every object in the screen.
-The game then updates the speed, and adds a velocity to match the position for the next tick.
+The frontend is built using vite, typescript and BiomeJS for linting.
+The client updates the speed to match the server's, and always adds a small compensation if their positions diverge.
 This ensures smooth position updating and is lightweight.
-The frontend is built using vite.
 
 ### how to run
-`bash dev.sh` or `go run .` in the /server and `npm run dev` in the /client
+`bash dev.sh` or 
+`go run .` in the /server and `npm run dev` in the /client
