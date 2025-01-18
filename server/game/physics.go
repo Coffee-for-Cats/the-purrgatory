@@ -4,6 +4,13 @@ import (
 	"math"
 )
 
+// for correct player movement, the game should update the axis individually.
+// here, we check for every object on screen, checking first how much space the object
+// needs in that axis after moving, and adjusting it's speed to match said space.
+// Then, we consider that it already moved (even tho the p.Y did not changed), because
+// the object could ignore other objects that are in the diagonal to it's movement.
+// It's still crude, but works well enough.
+
 // automatically updates the position of the player.
 // Should be called before modifies in speed and acceleration
 func occupySpace(primary GameObject, g *GameRoom) (modified About) {
@@ -19,36 +26,35 @@ func occupySpace(primary GameObject, g *GameRoom) (modified About) {
 			continue
 		}
 
-		distX := math.Abs(float64(*p.X-*obj.X)) - (float64(*p.Width)/2 + float64(*obj.Width)/2)
-		distY := math.Abs(float64(*p.Y-*obj.Y)+float64(*p.VelY)) - (float64(*p.Height)/2 + float64(*obj.Height)/2)
+		x1, x2 := float64(*p.X), float64(*obj.X)
+		y1, y2 := float64(*p.Y), float64(*obj.Y)
+		w1, w2 := float64(*p.Width), float64(*obj.Width)
+		h1, h2 := float64(*p.Height), float64(*obj.Height)
 
-		if distX < 0 && distY < 0 {
-			sign := 1.0
-			if math.Signbit(float64(*p.VelY)) {
-				sign = -1.0
-			}
-			*p.VelY += float32(distY * sign)
-		}
-	}
+		distX := math.Abs(x1-x2) - (w1/2 + w2/2)
+		distYnext := math.Abs(y1-y2+float64(*p.VelY)) - (h1/2 + h2/2)
 
-	// for X-axis movement limitation
-	for _, object := range g.GameMap {
-		obj := object.about()
-		if !*obj.Solid || obj == p {
-			continue
+		if distX < 0 && distYnext < 0 {
+			*p.VelY += float32(distYnext * signFrom(*p.VelY))
 		}
 
-		distX := math.Abs(float64(*p.X-*obj.X)+float64(*p.VelX)) - (float64(*p.Width)/2 + float64(*obj.Width)/2)
-		distY := math.Abs(float64(*p.Y-*obj.Y)) - (float64(*p.Height)/2 + float64(*obj.Height)/2)
+		// temporary Y position to catch diagonal contact
+		tempY := y1 + float64(*p.VelY)
 
-		if distX < 0 && distY < 0 {
-			sign := 1.0
-			if math.Signbit(float64(*p.VelX)) {
-				sign = -1.0
-			}
-			*p.VelX += float32(distX * sign)
+		distY := math.Abs(tempY-y2) - (h1/2 + h2/2)
+		distXnext := math.Abs(x1-x2+float64(*p.VelX)) - (w1/2 + w2/2)
+
+		if distXnext < 0 && distY < 0 {
+			*p.VelX += float32(distXnext * signFrom(*p.VelX))
 		}
 	}
 
 	return p
+}
+
+func signFrom(num float32) float64 {
+	if num < 0 {
+		return -1.0
+	}
+	return 1.0
 }

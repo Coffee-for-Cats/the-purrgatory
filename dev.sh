@@ -1,4 +1,5 @@
 cd ./client
 npm run dev &
 cd ../server
-go run .
+go install github.com/air-verse/air@latest
+air
