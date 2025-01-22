@@ -1,9 +1,11 @@
 import { UpdatePosition } from '../logic/movement'
-import { type Movable, PaintObject, Source } from '../painting/animations'
+import { animate } from '../painting/animations'
+import { Source } from '../painting/painting'
 import type { GameObject } from './models'
 
-const src = Source('bluemage')
+const src = Source('mage')
 export function player(player: GameObject) {
-  UpdatePosition(player as Movable)
-  PaintObject(player as Movable, src)
+  UpdatePosition(player)
+  // PaintObject(player, src)
+  animate(player, src, 4, 5)
 }

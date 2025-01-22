@@ -1,11 +1,20 @@
 import { player } from './player'
 import { tree } from './tree'
 
-export interface GameObject {
+export class GameObject {
   type: string
+  x: number
+  y: number
+  vel_x: number
+  vel_y: number
+  animationData:  undefined | {
+    countToStep: number,
+    actualStep: number
+  }
 }
 
-export const Models = {
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+export const Models: { [key: string]: Function } = {
   player,
   tree,
 }

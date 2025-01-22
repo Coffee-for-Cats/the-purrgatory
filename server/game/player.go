@@ -49,6 +49,6 @@ func (p *Player) setup() {
 	p.Solid = true
 	p.X = 20
 	p.Y = -30
-	p.Width = 16 * config.ZOOM_FACTOR
-	p.Height = 16 * config.ZOOM_FACTOR
+	p.Width = 32 * config.ZOOM_FACTOR
+	p.Height = 32 * config.ZOOM_FACTOR
 }

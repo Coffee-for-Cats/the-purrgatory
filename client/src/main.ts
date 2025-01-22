@@ -1,7 +1,7 @@
 import { Update } from './logic/controlls'
 import { GameMap, Listen } from './logic/map'
 import { Models } from './models/models'
-import { ClearCanvas } from './painting/animations'
+import { ClearCanvas } from './painting/painting'
 
 let roomId = prompt('RoomId: ')
 if (!roomId) {

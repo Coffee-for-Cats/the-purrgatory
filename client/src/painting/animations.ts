@@ -1,37 +1,32 @@
 import { ZOOM_FACTOR } from '../configs'
+import type { GameObject } from '../models/models'
+import { ctx } from './painting'
 
-const GameCanvas = document.getElementById('game-canvas') as HTMLCanvasElement
-GameCanvas.width = GameCanvas.clientWidth
-GameCanvas.height = GameCanvas.clientHeight
-const ctx = GameCanvas.getContext('2d') as CanvasRenderingContext2D
-ctx.imageSmoothingEnabled = false
+export function animate(
+  obj: GameObject,
+  src: HTMLImageElement,
+  steps: number,
+  waits: number,
+) {
+  if (!obj.animationData) obj.animationData = { countToStep: 0, actualStep: 0 }
 
-export interface Movable {
-  x: number
-  y: number
-  vel_x: number
-  vel_y: number
-  type: string
-}
+  if (++obj.animationData.countToStep >= waits) {
+    obj.animationData.countToStep = 0
+    obj.animationData.actualStep++
+  }
+  if (obj.animationData.actualStep >= steps) {
+    obj.animationData.actualStep = 0
+  }
 
-export function ClearCanvas() {
-  // paint everything here =)
-  ctx.clearRect(0, 0, GameCanvas.width, GameCanvas.height)
-}
+  const sWidth = src.width / steps
+  const sHeigth = src.height
+  const dWidth = sWidth * ZOOM_FACTOR
+  const dHeight = sHeigth * ZOOM_FACTOR
+  // shifts the image source x to match actual step.
+  const src_x = sWidth * obj.animationData.actualStep
+  const src_y = 0
+  const x = obj.x - dWidth / 2
+  const y = -obj.y - dHeight / 2
 
-export function PaintObject(obj: Movable, src: HTMLImageElement) {
-  const width = src.width * ZOOM_FACTOR
-  const height = src.height * ZOOM_FACTOR
-
-  const x = obj.x - width / 2
-  const y = -obj.y - height / 2
-
-  ctx.drawImage(src, x, y, width, height)
-}
-
-// gets the filename and returns an image with the src set to /sprites/<name>.png
-export function Source(url: string) {
-  const img = document.createElement('img')
-  img.src = `./sprites/${url}.png`
-  return img
+  ctx.drawImage(src, src_x, src_y, sWidth, sHeigth, x, y, dWidth, dHeight)
 }
