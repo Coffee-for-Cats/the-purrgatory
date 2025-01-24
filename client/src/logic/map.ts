@@ -1,4 +1,4 @@
-import type { GameObject } from '../models/models'
+import { GameObject } from '../models/models'
 
 export type GameMapType = Map<string, GameObject>
 export const GameMap: GameMapType = new Map()
@@ -15,10 +15,16 @@ function defaultMapUpdater(ev: MessageEvent) {
   // creates the object if it doesn't exist
   for (const key of Object.keys(newState)) {
     if (!GameMap[key]) {
-      GameMap[key] = newState[key]
+      try {
+        GameMap[key] = new GameObject(newState[key])
+      } catch (e) {
+        console.error('Invalid object', newState[key])
+        throw new Error(e)
+      }
     }
   }
 
+  // shifts to correct position when there is difference between client and server
   for (const key of Object.keys(GameMap)) {
     // should not exist and exists
     if (!newState[key] && GameMap[key]) {
@@ -48,7 +54,7 @@ function fasterMapUpdater(ev: MessageEvent) {
   const newState: GameMapType = JSON.parse(ev.data)
   // not directly assinging to keep GameMap as a ES6 Map instead of Object.
   for (const key of Object.keys(newState)) {
-    GameMap[key] = newState[key]
+    GameMap[key] = new GameObject(newState[key])
   }
   socketRef.onmessage = defaultMapUpdater
 }

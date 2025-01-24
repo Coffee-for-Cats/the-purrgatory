@@ -4,12 +4,10 @@ import { ctx } from './painting'
 
 export function animate(
   obj: GameObject,
-  src: HTMLImageElement,
+  src: HTMLCanvasElement,
   steps: number,
   waits: number,
 ) {
-  if (!obj.animationData) obj.animationData = { countToStep: 0, actualStep: 0 }
-
   if (++obj.animationData.countToStep >= waits) {
     obj.animationData.countToStep = 0
     obj.animationData.actualStep++
@@ -23,10 +21,10 @@ export function animate(
   const dWidth = sWidth * ZOOM_FACTOR
   const dHeight = sHeigth * ZOOM_FACTOR
   // shifts the image source x to match actual step.
-  const src_x = sWidth * obj.animationData.actualStep
-  const src_y = 0
-  const x = obj.x - dWidth / 2
-  const y = -obj.y - dHeight / 2
+  const sx = sWidth * obj.animationData.actualStep
+  const sy = 0
+  const dx = obj.x - dWidth / 2
+  const dy = -obj.y - dHeight / 2
 
-  ctx.drawImage(src, src_x, src_y, sWidth, sHeigth, x, y, dWidth, dHeight)
+  ctx.drawImage(src, sx, sy, sWidth, sHeigth, dx, dy, dWidth, dHeight)
 }

@@ -23,8 +23,17 @@ export function PaintObject(obj: GameObject, src: HTMLImageElement) {
 }
 
 // gets the filename and returns an image with the src set to /sprites/<name>.png
-export function Source(url: string) {
+export function Source(url: string): HTMLCanvasElement {
   const img = document.createElement('img')
   img.src = `./sprites/${url}.png`
-  return img
+
+  const canvas = document.createElement('canvas')
+
+  img.onload = () => {
+    canvas.width = img.width
+    canvas.height = img.height
+    canvas.getContext('2d')?.drawImage(img, 0, 0)
+  }
+
+  return canvas
 }

@@ -7,9 +7,20 @@ export class GameObject {
   y: number
   vel_x: number
   vel_y: number
-  animationData:  undefined | {
-    countToStep: number,
+  animationData: {
+    countToStep: number
     actualStep: number
+    flipped: boolean
+  }
+
+  // slightly problematic, but there should be no harm
+  constructor(contents) {
+    Object.assign(this, contents)
+    this.animationData = {
+      countToStep: 0,
+      actualStep: 0,
+      flipped: false,
+    }
   }
 }
 
