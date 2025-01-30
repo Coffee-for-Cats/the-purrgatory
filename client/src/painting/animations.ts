@@ -1,4 +1,3 @@
-import { ZOOM_FACTOR } from '../configs'
 import type { GameObject } from '../models/models'
 import { ctx } from './painting'
 
@@ -16,15 +15,14 @@ export function animate(
     obj.animationData.actualStep = 0
   }
 
-  const sWidth = src.width / steps
-  const sHeigth = src.height
-  const dWidth = sWidth * ZOOM_FACTOR
-  const dHeight = sHeigth * ZOOM_FACTOR
+  // sWidth needs to only be 1 frame of the image, not it full
+  const Width = src.width / steps
+  const Height = src.height
   // shifts the image source x to match actual step.
-  const sx = sWidth * obj.animationData.actualStep
+  const sx = Width * obj.animationData.actualStep
   const sy = 0
-  const dx = obj.x - dWidth / 2
-  const dy = -obj.y - dHeight / 2
+  const dx = obj.x - Width / 2
+  const dy = obj.y + Height / 2
 
-  ctx.drawImage(src, sx, sy, sWidth, sHeigth, dx, dy, dWidth, dHeight)
+  ctx.drawImage(src, sx, sy, Width, Height, dx, -dy, Width, Height)
 }

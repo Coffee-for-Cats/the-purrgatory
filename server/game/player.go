@@ -1,7 +1,5 @@
 package game
 
-import "purrgatory/config"
-
 type PlayerControls struct {
 	ArrowUp    bool
 	ArrowDown  bool
@@ -47,8 +45,8 @@ func (p *Player) step(g *GameRoom) {
 func (p *Player) setup() {
 	p.Type = "player"
 	p.Solid = true
-	p.X = 20
-	p.Y = -30
-	p.Width = 32 * config.ZOOM_FACTOR
-	p.Height = 32 * config.ZOOM_FACTOR
+	p.X = 0
+	p.Y = 0
+	p.Width = 32
+	p.Height = 32
 }

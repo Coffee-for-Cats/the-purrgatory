@@ -16,8 +16,8 @@ func (GameRoom *GameRoom) Start() {
 	// just for testing. TODO: remove this
 	GameRoom.Append(&Tree{
 		Physical: Physical{
-			X: 200,
-			Y: -300,
+			X: 80,
+			Y: -100,
 		},
 	})
 

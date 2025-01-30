@@ -1,3 +1,4 @@
+import { ZOOM_FACTOR } from '../configs'
 import { UpdatePosition } from '../logic/movement'
 import { animate } from '../painting/animations'
 import { ctx, Source } from '../painting/painting'

@@ -31,8 +31,8 @@ func occupySpace(primary GameObject, g *GameRoom) (modified About) {
 		w1, w2 := float64(*p.Width), float64(*obj.Width)
 		h1, h2 := float64(*p.Height), float64(*obj.Height)
 
-		distX := math.Abs(x1-x2) - (w1/2 + w2/2)
-		distYnext := math.Abs(y1-y2+float64(*p.VelY)) - (h1/2 + h2/2)
+		distX := math.Abs(x1-x2) - (w1+w2)/2
+		distYnext := math.Abs(y1-y2+float64(*p.VelY)) - (h1+h2)/2
 
 		if distX < 0 && distYnext < 0 {
 			*p.VelY += float32(distYnext * signFrom(*p.VelY))
@@ -41,8 +41,8 @@ func occupySpace(primary GameObject, g *GameRoom) (modified About) {
 		// temporary Y position to catch diagonal contact
 		tempY := y1 + float64(*p.VelY)
 
-		distY := math.Abs(tempY-y2) - (h1/2 + h2/2)
-		distXnext := math.Abs(x1-x2+float64(*p.VelX)) - (w1/2 + w2/2)
+		distY := math.Abs(tempY-y2) - (h1+h2)/2
+		distXnext := math.Abs(x1-x2+float64(*p.VelX)) - (w1+w2)/2
 
 		if distXnext < 0 && distY < 0 {
 			*p.VelX += float32(distXnext * signFrom(*p.VelX))

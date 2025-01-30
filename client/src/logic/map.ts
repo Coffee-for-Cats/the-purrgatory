@@ -1,3 +1,4 @@
+import { ZOOM_FACTOR } from '../configs'
 import { GameObject } from '../models/models'
 
 export type GameMapType = Map<string, GameObject>
@@ -19,7 +20,7 @@ function defaultMapUpdater(ev: MessageEvent) {
         GameMap[key] = new GameObject(newState[key])
       } catch (e) {
         console.error('Invalid object', newState[key])
-        throw new Error(e)
+        throw e
       }
     }
   }
@@ -32,12 +33,12 @@ function defaultMapUpdater(ev: MessageEvent) {
     } else {
       // adds a little acceleration to compensate the difference in the next tick update.
       // difference between "should" position and "is" position
-      const dif_x = newState[key].x - GameMap[key].x
-      const dif_y = newState[key].y - GameMap[key].y
+      const dif_x = newState[key].x * ZOOM_FACTOR - GameMap[key].x
+      const dif_y = newState[key].y * ZOOM_FACTOR - GameMap[key].y
       // no need for "/ FRAMES_PER_TICK" because the position is already updated
       // considering the frames.
-      GameMap[key].vel_x = newState[key].vel_x + dif_x
-      GameMap[key].vel_y = newState[key].vel_y + dif_y
+      GameMap[key].vel_x = newState[key].vel_x * ZOOM_FACTOR + dif_x
+      GameMap[key].vel_y = newState[key].vel_y * ZOOM_FACTOR + dif_y
     }
   }
 }
