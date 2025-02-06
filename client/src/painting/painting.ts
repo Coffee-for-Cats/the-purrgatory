@@ -37,3 +37,14 @@ export function Source(url: string): HTMLCanvasElement {
 
   return canvas
 }
+
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+export function Flipped(obj: GameObject, callback: Function) {
+  ctx.save()
+  ctx.scale(-1, 1)
+  ctx.translate(-obj.x * 2, 0)
+
+  callback()
+
+  ctx.restore()
+}
